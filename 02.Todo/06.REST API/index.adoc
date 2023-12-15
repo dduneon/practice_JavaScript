@@ -1,0 +1,380 @@
+= REST API
+
+* 제공해드린 Todo REST API를 활용하여 구현합니다.
+* fetch , (async / await)를 적절히 활용해서 구현합니다.
+* link:source/apiStore.js[apiStore.js]의 todo 순서대로 구현합니다.
+
+
+== Server URL
+
+* http://133.186.241.167:8100/
+
+
+== 인증
+
+* header
+** X-USER-ID
+** 사용하고 싶은 임의 ID
+
+== event 등록
+
+* Request
+
+[source, httprequest]
+----
+POST /api/calendar/events
+Content-Type: application/json
+X-USER-ID: marco
+
+{
+  "subject" : "html/css/javasciprt study",
+  "eventAt": "2023-02-15"
+}
+
+----
+
+* Response
+** http status code : 201 Created
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/201
+
+[source,json]
+----
+{
+    "id": 8
+}
+----
+
+== event 조회
+
+* Request
+
+[source,httprequest]
+----
+GET /api/calendar/events/{id}
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code : 200 OK
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/200
+
+[source,json]
+----
+{
+  "id": 2887,
+  "subject": "123",
+  "eventAt": "2023-04-01",
+  "createdAt": "2023-04-21T14:55:03"
+}
+----
+
+== event - 조회 - 일단위
+
+* Request
+** parameters
+*** year - 년
+*** month - 월
+*** day -일
+
+[source,httprequest]
+----
+GET /api/calendar/events/?year=2023&month=2&day=15
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code : 200 OK
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/200
+
+[source,json]
+----
+[
+  {
+    "id": 7,
+    "subject": "todo-3",
+    "eventAt": "2023-02-15",
+    "createdAt": "2023-03-16T01:17:34"
+  },
+  {
+    "id": 8,
+    "subject": "html/css/javasciprt study",
+    "eventAt": "2023-02-15",
+    "createdAt": "2023-03-16T12:27:11"
+  },
+  {
+    "id": 9,
+    "subject": "데이터베이스 공부하기",
+    "eventAt": "2023-02-15",
+    "createdAt": "2023-03-16T12:31:11"
+  },
+  {
+    "id": 10,
+    "subject": "Spring framework 학습",
+    "eventAt": "2023-02-15",
+    "createdAt": "2023-03-16T12:31:46"
+  }
+]
+----
+
+== event - 조회 - 월단위
+
+* Request
+** parameters
+*** year  - 년
+*** month - 월
+
+[source,httprequest]
+----
+GET http://localhost:8100/api/calendar/events/?year=2023&month=3
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code : 200 OK
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/200
+
+[source,json]
+----
+[
+  {
+    "id": 1,
+    "subject": "todo-1",
+    "eventAt": "2023-03-15",
+    "createdAt": "2023-03-15T23:09:18"
+  },
+  {
+    "id": 2,
+    "subject": "todo-2",
+    "eventAt": "2023-03-15",
+    "createdAt": "2023-03-15T23:48:13"
+  },
+  {
+    "id": 4,
+    "subject": "todo-3",
+    "eventAt": "2023-03-15",
+    "createdAt": "2023-03-15T23:55:41"
+  },
+  {
+    "id": 5,
+    "subject": "todo-3",
+    "eventAt": "2023-03-15",
+    "createdAt": "2023-03-16T00:04:45"
+  }
+]
+----
+
+== event 삭제 (id)
+
+* Request
+
+[source,httprequest]
+----
+DELETE /api/calendar/events/{id}
+Content-Type: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code : 204 No Content
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/204
+
+[source,httprequest]
+----
+<Response body is empty>
+----
+
+== event 삭제 ( 일단위)
+
+* Request
+
+[source,httprequest]
+----
+DELETE /api/calendar/events/daily/2022-02-15
+Content-Type: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code : 204 No Content
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/204
+
+[source, httprequest]
+----
+<Response body is empty>
+----
+
+== 일 등록 카운트
+
+* Request
+** parameters
+*** date  : yyyy-MM-dd
+
+[source,httprequest]
+----
+GET /api/calendar/daily-register-count?date=2023-03-01
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code : 200 OK
+
+[source,json]
+----
+{
+  "count": 8
+}
+----
+
+== 400 Bad Request
+
+* Request
+** 사용자의 잘못으로 적절한 parameter 전달이 안됨 ( year, month, day )
+
+[source,httprequest]
+----
+GET /api/calendar/events
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code : 400 Bad Request
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/400
+
+[source,json]
+----
+{
+  "statusCode": 400,
+  "timestamp": "2023-03-16T12:51:28",
+  "message": "Required request parameter 'year' for method parameter type Integer is not present"
+}
+----
+
+== 401 Unauthorized
+
+* Request
+** X-USER-ID 누락으로 인증되지 않는 사용자
+
+[source,http request]
+----
+GET /api/calendar/events/1
+Accept: application/json
+----
+
+* Response
+** http status code : 401 Unauthorized
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/401
+
+[source,json]
+----
+{
+    "statusCode": 401,
+    "timestamp": "2023-03-16T12:56:28",
+    "message": "Unauthorized"
+}
+----
+
+== 403 Forbidden
+
+* Request
+** 1번 event의 소유자는 -&gt;  marco
+
+[source,http request]
+----
+GET http://localhost:8100/api/calendar/events/1
+Accept: application/json
+X-USER-ID: abc
+----
+
+* Response
+** http status code : 403 Forbidden
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/403
+
+[source,json]
+----
+{
+  "statusCode": 403,
+  "timestamp": "2023-03-16T12:59:03",
+  "message": "잘못된 이벤트 소유자 "
+}
+----
+
+== 404 Not Found
+
+* Request
+** 존재하지 않는 envet 조회
+
+[source,http request]
+----
+GET http://localhost:8100/api/calendar/events/1000000
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http status code. : 404 Not Found
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/404
+
+[source,json]
+----
+{
+  "statusCode": 404,
+  "timestamp": "2023-03-16T13:00:53",
+  "message": "이벤트가 존재하지 않습니다. eventId : 1000000"
+}
+----
+
+== 405 Method Not Allowed
+
+* Request
+** 허용하지 않은 PATCH  method 호출
+
+[source,http request]
+----
+PATCH /api/calendar/events/2
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** 405 Method Not Allowed
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/405
+
+[source,json]
+----
+{
+  "timestamp": "2023-03-16T04:03:54.625+00:00",
+  "status": 405,
+  "error": "Method Not Allowed",
+  "path": "/api/calendar/events/1"
+}
+----
+
+== 500 Internal Server Error
+
+* Request
+** id (숫자0 -&gt; 문자로 요청 서버내에서 exception 발생
+
+[source,httprequest]
+----
+GET http://localhost:8100/api/calendar/events/a
+Accept: application/json
+X-USER-ID: marco
+----
+
+* Response
+** http sstatus code : 500 Internal Server Error
+*** https://developer.mozilla.org/ko/docs/Web/HTTP/Status/500
+
+[source,json]
+----
+{
+  "statusCode": 500,
+  "timestamp": "2023-03-16T13:06:38",
+  "message": "Failed to convert value of type 'java.lang.String' to required type 'long'; nested exception is java.lang.NumberFormatException: For input string: \"a\""
+}
+----

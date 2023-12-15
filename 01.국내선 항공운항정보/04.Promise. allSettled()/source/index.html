@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="utf-8" />
+    <script src="api.js"></script>
+    <!-- <script src="./tago.js"></script> -->
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <main>
+        <h1>국내선 항공스케줄 조회</h1>
+        <div class="form-wrapper">
+            <form id="find-form">
+                <select id="departureId" name="departureId" required >
+                    <option value="">공항선택(출발)</option>
+                </select>
+                <select id="arrivalId" name="arrivalId" required>
+                    <option value="" >공항선택(도착)</option>
+                </select>
+                <input id="plandDate" name="plandDate" type="date"   required/>
+                <button type="submit" id="btn-find">조회</div>
+            </form>
+        </div>
+
+        <div class="schedule-container" id="schedule-container">
+            <table id="schedule-tbl">
+                <thead>
+                    <tr>
+                        <th>항공편명</th>
+                        <th>항공사명</th>
+                        <th>출발시간</th>
+                        <th>도착시간</th>
+                        <th>일반석운임</th>
+                        <th>비즈니석운임</th>
+                        <th>출발공항</th>
+                        <th>도착공항</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                </tbody>
+
+            </table>
+        </div>
+    </main>
+</body>
+</html>

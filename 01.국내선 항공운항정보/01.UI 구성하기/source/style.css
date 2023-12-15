@@ -1,0 +1,86 @@
+body{
+    background-image: url("https://gongu.copyright.or.kr/gongu/wrt/cmmn/wrtFileImageView.do?wrtSn=13301635&filePath=L2Rpc2sxL25ld2RhdGEvMjAyMS8yMS9DTFMxMDAwNC8xMzMwMTYzNV9XUlRfMjFfQ0xTMTAwMDRfMjAyMTEyMTNfMQ==&thumbAt=Y&thumbSe=b_tbumb&wrtTy=10004");
+    background-repeat: no-repeat;
+    background-size:contain;
+    background-position-x:left;
+    background-position-y: top;
+}
+main{
+    width:1000px;
+    margin:auto;
+    text-align: center;
+}
+main h1 {
+    color:burlywood;
+}
+.form-wrapper input, select {
+    border-width:1px;
+    border-style:sold;
+    border-color:black;
+    height:30px;
+    padding:0px;
+    margin:0px;
+    width: 200px;
+}
+
+.form-wrapper button{
+    border-width:1px;
+    border-style:sold;
+    border-color:black;
+    height:32px;
+    width:100px;
+}
+
+.form-wrapper button :hover{
+    background-color: skyblue;
+}
+
+.form-wrapper select{
+    height:33px;
+}
+
+.form-wrapper{
+    border-width:1px;
+    border-style:solid;
+    border-color:#ccc;
+    width:100%;
+    min-height: 100px;
+    box-sizing:border-box;
+    padding:30px;
+}
+
+.schedule-container{
+    text-align:left;
+    border-width: 1px;
+    border-color: #ccc;
+    border-style:solid;
+    margin-top:50px;
+    min-height: 200px;
+}
+
+#schedule-tbl{
+    border-width: 1px;
+    border-style:solid;
+    border-color: #ccc;
+    width: 98%;
+    margin:auto;
+    margin-top:20px;
+    margin-bottom:20px;
+    border-collapse: collapse;
+}
+#schedule-tbl th,td {
+    border-width: 1px;
+    border-style:solid;
+    border-color: #ccc;
+    font-size:10pt;
+}
+
+#schedule-tbl thead th{
+    text-align:center;
+    padding:5px;
+}
+
+#schedule-tbl tbody td{
+    text-align:center;
+    padding:5px;
+}

@@ -1,0 +1,34 @@
+= UI구성
+
+== css 정당히 작성..
+
+== todo-item
+
+[source,html]
+----
+<div id="todo-item-wrapper">
+    <div class="todo-item">
+        <div class="todo-item-day">
+            1
+        </div>
+
+        <div class="todo-item-form">
+            <form method="post" action="">
+                <p><input type="text" name="todoDate" value="2023-3-13" readonly /> </p>
+                <p><input type="text" name="subject" placeholder="todo 입력" /></p>
+                <p><button type="button">등록</button></p>
+            </form>
+        </div>
+
+        <ul class="todo-item-list" >
+            <li>todo-item1</li>
+            <li>todo-item2</li>
+            <li>todo-item3</li>
+            <li>todo-item4</li>
+            <li>todo-item5</li>
+        </ul>
+    </div>
+</div>
+----
+
+image:./images/img.png[img.png]
