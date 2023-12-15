@@ -31,15 +31,17 @@ function Navigator(uiBtnPrevMonthId, uiBtnNextMonthId, uiBtnCurrentMonthId){
     year = searchParam.get("year");
     month = searchParam.get("month");
 
+    const today = new Date();
     // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Date/getFullYear
     if(year == null){
         //TODO#2-2 year 설정
-
+        year = today.getFullYear();
     }
 
     // https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Date/getMonth
     if(month == null){
         //TODO#2-3 month설정 0부터 시작 즉 1월은 = 0
+        month = today.getMonth() + 1;
     }
 
    
@@ -55,12 +57,15 @@ function Navigator(uiBtnPrevMonthId, uiBtnNextMonthId, uiBtnCurrentMonthId){
         https://developer.mozilla.org/ko/docs/Web/JavaScript/Reference/Global_Objects/Error
         if(btnPrevMonth == null){
             //TODO#3-1 이전 button을 찾을 수 없다면 오류던지기
+            throw new Error("Cannot Find PrevButton")
         }
         if(btnNextMonth == null){
             //TODO#3-2 다음 button을 찾을 수 없다면 오류던지기
+            throw new Error("Cannot Find NextButton")
         }
         if(btnCurrentMonth == null){
             //TODO#3-3 오늘 button을 찾을 수 없다면 오류던지기
+            throw new Error("Cannot Find CurrentButton")
         }
 
         //버튼 이벤트 등록
@@ -70,7 +75,11 @@ function Navigator(uiBtnPrevMonthId, uiBtnNextMonthId, uiBtnCurrentMonthId){
             let targetYear=null;
             let targetMonth=null;
             //...
-
+            targetMonth -= 1;
+            if(targetMonth === 0) {
+                targetYear = year - 1;
+                targetMonth = 12;
+            }
             _navigate(targetYear,targetMonth);
         });
 
@@ -80,7 +89,11 @@ function Navigator(uiBtnPrevMonthId, uiBtnNextMonthId, uiBtnCurrentMonthId){
             let targetYear=null;
             let targetMonth=null;
             //...
-
+            targetMonth += 1;
+            if(targetMonth === 13) {
+                targetYear = year + 1;
+                targetMonth = 1;
+            }
             _navigate(targetYear,targetMonth);
         });
         //오늘
@@ -89,7 +102,8 @@ function Navigator(uiBtnPrevMonthId, uiBtnNextMonthId, uiBtnCurrentMonthId){
             let targetYear=null;
             let targetMonth=null;
             //...
-            
+            targetYear = year;
+            targetMonth = month;
             _navigate(targetYear,targetMonth);
         });
     });
