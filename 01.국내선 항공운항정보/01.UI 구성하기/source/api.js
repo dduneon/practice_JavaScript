@@ -32,7 +32,7 @@ const flightScheduleApi = (function(){
         const response = await fetch(url);
         const json = await response.json();
         if(response.ok) {
-            const items = await json.response.body.items.item;
+            const items = json.response.body.items.item;
             return (items == null || items == undefined) ? [] : items;
         } else {
             throw new Error("getAirportList error");
@@ -61,7 +61,7 @@ const flightScheduleApi = (function(){
 
         const response = await fetch(url);
         const json = await response.json();
-        console.log(json);
+
         if(response.ok) {
             const items = await json.response.body.items.item;
 
@@ -73,6 +73,8 @@ const flightScheduleApi = (function(){
                 item.prestigeCharge = item.prestigeCharge == undefined ? "" : item.prestigeCharge;
             }
             return items;
+        } else {
+            throw new Error("error: 스케줄 조회");
         }
 
         //TODO#3 항공운항정보 조회
@@ -85,13 +87,21 @@ const flightScheduleApi = (function(){
 
         //조회로직 실행
         depPlandTime = depPlandTime.replaceAll("-","");
-        const result = [];
+        const promiseList = [];
 
         for (const airline of airlineList) {
-            const promise = await getFlightSchedule(depAirportId,arrAirportId,depPlandTime,airline.airlineId);
+            const promise = getFlightSchedule(depAirportId,arrAirportId,depPlandTime,airline.airlineId);
             //TODO#4 항공사별 운항정보를 얻어서 하나의 리스트로 리턴
-            result.push(... promise);
+            promiseList.push(promise);
         }
+
+        const result = await Promise.all(promiseList).then(list => {
+            const ret = [];
+            for(let i = 0; i<list.length; i++) {
+                ret.push(...list[i]);
+            }
+            return ret;
+        })
 
         result.sort(function (a, b) {
             if (a.arrPlandTime > b.arrPlandTime)
